@@ -24,7 +24,7 @@ data = na.fill(data, "extend")
 data = data["::2019-09-20"] ## setting for this week
 md_rf = randomForest(weekly.returns ~ ., data = data)
 md_rf$importance / sum(md_rf$importance)
-png(filename="./dashboard.png")
+png(filename="./dashboard.png", res=3000)
 par(mfrow=c(2,2))
 plot(predict(md_rf, data), data[,1], main="QQ Plot")
 barplot(t(data.frame(md_rf$importance / sum(md_rf$importance))), las=2, names.arg = tickers[2:length(tickers)], main="Variable Importance")
