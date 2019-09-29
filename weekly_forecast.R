@@ -9,6 +9,7 @@ tickers <- c("QQQ", "MSFT", "AAPL", "INTC", "ORCL", "AMZN", "JNJ",
              "XLY", "XLP", "XLV", "XLF", "XLK", "XTL", "XLU", "XLRE", "TWTR",
              "TGT", "VRSN", "WDC", "WMT", "PG", "SLV", "BAC", "SQ", "BIDU")
 #getSymbols(tickers, to="2019-09-24")
+getSymbols(tickers)
 
 data = (cbind(lag(weeklyReturn(QQQ), -1), 
               weeklyReturn(MSFT), lag(weeklyReturn(MSFT), 1:12), 
