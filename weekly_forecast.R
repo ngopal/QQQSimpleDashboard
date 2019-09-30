@@ -98,7 +98,7 @@ text(8, 0, summary(res)[4])
 
 plot(predict(md_rf, data), data[,1], main="QQ Plot RF")
 plot(predict(md_rf2, data), data[,1], main="QQ Plot GLM")
-plot(predict(md_rf3, data), data[,1], main="QQ Plot GBM")
+plot(predict(md_rf3, data, n.trees = 1000), data[,1], main="QQ Plot GBM")
 
 barplot(t(data.frame(md_rf$importance / sum(md_rf$importance))), las=2, main="Variable RF Importance")
 barplot(t(data.frame(md_rf2$coefficients)), las=2, main="GLM Coefficients")
