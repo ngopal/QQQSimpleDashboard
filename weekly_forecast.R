@@ -74,7 +74,7 @@ md_rf3 = gbm(weekly.returns ~ ., data = data, n.trees = 1000)
 
 # Creating Image
 png(filename="./dashboard.png")
-par(mfrow=c(4,4)) # rows, cols
+par(mfrow=c(3,3)) # rows, cols
 
 weeks <- 8
 days = weeks
