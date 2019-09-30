@@ -59,12 +59,10 @@ data = na.fill(data, "extend")
 # Models
 md_rf = randomForest(weekly.returns ~ ., data = data)
 md_rf2 = glm(weekly.returns ~ ., data = data)
+
+# Creating Image
 png(filename="./dashboard.png")
 par(mfrow=c(3,2))
-plot(predict(md_rf, data), data[,1], main="QQ Plot RF")
-plot(predict(md_rf2, data), data[,1], main="QQ Plot GLM")
-barplot(t(data.frame(md_rf$importance / sum(md_rf$importance))), las=2, main="Variable Importance")
-barplot(t(data.frame(md_rf$coefficients)), las=2, main="Coefficients")
 
 weeks <- 8
 days = weeks
@@ -79,6 +77,12 @@ lines(c(NULL,as.vector(predict(md_rf2, data[(dim(data)[1]-days):(dim(data)[1])])
 dd <- cbind(as.vector(data[,1]), predict(md_rf2, data[,-1]))
 res <- ifelse(((dd[,1] > 0 & dd[,2] > 0) | (dd[,1] < 0 & dd[,2] < 0)), 1, 0)
 text(8, 0, summary(res)[4])
+plot(predict(md_rf, data), data[,1], main="QQ Plot RF")
+plot(predict(md_rf2, data), data[,1], main="QQ Plot GLM")
+barplot(t(data.frame(md_rf$importance / sum(md_rf$importance))), las=2, main="Variable Importance")
+barplot(t(data.frame(md_rf$coefficients)), las=2, main="Coefficients")
+
+
 
 #predict(md_rf, data[dim(data)[1]])
 #plot(c(as.vector(data[(dim(data)[1]-dim(data)[1]):(dim(data)[1]-1),1]), NULL), type="l", xlim=c(1,dim(data)[1]+1), main="Full Model")
