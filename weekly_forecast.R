@@ -74,7 +74,7 @@ md_rf3 = gbm(weekly.returns ~ ., data = data, n.trees = 1000)
 
 # Creating Image
 png(filename="./dashboard.png")
-par(mfrow=c(3,3)) # rows, cols
+par(mfrow=c(4,4)) # rows, cols
 
 weeks <- 8
 days = weeks
@@ -104,10 +104,6 @@ barplot(t(data.frame(md_rf$importance / sum(md_rf$importance))), las=2, main="Va
 barplot(t(data.frame(md_rf2$coefficients)), las=2, main="GLM Coefficients")
 barplot(t(data.frame(summary(md_rf3)$rel.inf)), las=2, main="GBM Variable Importance")
 
-
-#predict(md_rf, data[dim(data)[1]])
-#plot(c(as.vector(data[(dim(data)[1]-dim(data)[1]):(dim(data)[1]-1),1]), NULL), type="l", xlim=c(1,dim(data)[1]+1), main="Full Model")
-#lines(c(NULL,as.vector(predict(md_rf, data[(dim(data)[1]-dim(data)[1]):(dim(data)[1])]))), col="red")
 
 dev.off()
 
