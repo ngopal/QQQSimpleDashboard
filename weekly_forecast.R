@@ -3,6 +3,7 @@
 # install.packages("randomForest")
 library(quantmod)
 library(randomForest)
+library(gbm)
 tickers <- c("QQQ", "MSFT", "AAPL", "INTC", "ORCL", "AMZN", "JNJ", 
              "VRSN", "USO", "ALTX", "CAT", "CRM", "GLD", "CMG", "AZO", 
              "SPY", "GLW", "KO", "JWN", "GM", "DUK", "XLE", "XLB", "XLI", 
