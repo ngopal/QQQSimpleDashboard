@@ -7,7 +7,8 @@ tickers <- c("QQQ", "MSFT", "AAPL", "INTC", "ORCL", "AMZN", "JNJ",
              "VRSN", "USO", "ALTX", "CAT", "CRM", "GLD", "CMG", "AZO", 
              "SPY", "GLW", "KO", "JWN", "GM", "DUK", "XLE", "XLB", "XLI", 
              "XLY", "XLP", "XLV", "XLF", "XLK", "XTL", "XLU", "XLRE", "TWTR",
-             "TGT", "VRSN", "WDC", "WMT", "PG", "SLV", "BAC", "SQ", "BIDU")
+             "TGT", "VRSN", "WDC", "WMT", "PG", "SLV", "BAC", "SQ", "BIDU",
+             "MU", "TSLA", "BTCUSD=X", "NFLX", "GOOG", "BRK.B", "BAC", "JPM", "MS")
 #getSymbols(tickers, to="2019-09-24")
 getSymbols(tickers)
 window = 12
@@ -52,7 +53,16 @@ data = (cbind(lag(weeklyReturn(QQQ), -1),
               weeklyReturn(SLV), lag(weeklyReturn(SLV), 1:window),
               weeklyReturn(BAC),lag(weeklyReturn(BAC), 1:window),
               weeklyReturn(SQ), lag(weeklyReturn(SQ), 1:window),
-              weeklyReturn(BIDU), lag(weeklyReturn(BIDU), 1:window)
+              weeklyReturn(BIDU), lag(weeklyReturn(BIDU), 1:window), 
+              weeklyReturn(MU), lag(weeklyReturn(MU), 1:window), 
+              weeklyReturn(TSLA), lag(weeklyReturn(TSLA), 1:window), 
+              weeklyReturn(`BTCUSD=X`), lag(weeklyReturn(`BTCUSD=X`), 1:window), 
+              weeklyReturn(NFLX), lag(weeklyReturn(NFLX), 1:window), 
+              weeklyReturn(GOOG), lag(weeklyReturn(GOOG), 1:window), 
+              weeklyReturn(`BRK.B`), lag(weeklyReturn(`BRK.B`), 1:window), 
+              weeklyReturn(BAC), lag(weeklyReturn(BAC), 1:window), 
+              weeklyReturn(JPM), lag(weeklyReturn(JPM), 1:window), 
+              weeklyReturn(MS), lag(weeklyReturn(MS), 1:window)
               ))
 data = na.fill(data, "extend")
 #data = data["::2019-09-20"] ## setting for this week
