@@ -10,7 +10,7 @@ tickers <- c("QQQ", "MSFT", "AAPL", "INTC", "ORCL", "AMZN", "JNJ",
              "TGT", "VRSN", "WDC", "WMT", "PG", "SLV", "BAC", "SQ", "BIDU")
 #getSymbols(tickers, to="2019-09-24")
 getSymbols(tickers)
-window = 16
+window = 12
 data = (cbind(lag(weeklyReturn(QQQ), -1), 
               weeklyReturn(MSFT), lag(weeklyReturn(MSFT), 1:window), 
               weeklyReturn(AAPL), lag(weeklyReturn(AAPL), 1:window), 
@@ -59,10 +59,11 @@ data = na.fill(data, "extend")
 # Models
 md_rf = randomForest(weekly.returns ~ ., data = data)
 md_rf2 = glm(weekly.returns ~ ., data = data)
+md_rf3 = gbm(weekly.returns ~ ., data = data, n.trees = 1000)
 
 # Creating Image
 png(filename="./dashboard.png")
-par(mfrow=c(3,2))
+par(mfrow=c(3,3)) # rows, cols
 
 weeks <- 8
 days = weeks
@@ -77,11 +78,20 @@ lines(c(NULL,as.vector(predict(md_rf2, data[(dim(data)[1]-days):(dim(data)[1])])
 dd <- cbind(as.vector(data[,1]), predict(md_rf2, data[,-1]))
 res <- ifelse(((dd[,1] > 0 & dd[,2] > 0) | (dd[,1] < 0 & dd[,2] < 0)), 1, 0)
 text(8, 0, summary(res)[4])
+
+plot(c(as.vector(data[(dim(data)[1]-days):(dim(data)[1]-1),1]), NULL), type="l", xlim=c(1,days+1), main="Next Week GBM Forecast")
+lines(c(NULL,as.vector(predict(md_rf3, data[(dim(data)[1]-days):(dim(data)[1])], n.trees=1000))), col="red")
+dd <- cbind(as.vector(data[,1]), predict(md_rf3, data[,-1], n.trees=1000))
+res <- ifelse(((dd[,1] > 0 & dd[,2] > 0) | (dd[,1] < 0 & dd[,2] < 0)), 1, 0)
+text(8, 0, summary(res)[4])
+
 plot(predict(md_rf, data), data[,1], main="QQ Plot RF")
 plot(predict(md_rf2, data), data[,1], main="QQ Plot GLM")
-barplot(t(data.frame(md_rf$importance / sum(md_rf$importance))), las=2, main="Variable Importance")
-barplot(t(data.frame(md_rf2$coefficients)), las=2, main="Coefficients")
+plot(predict(md_rf3, data), data[,1], main="QQ Plot GBM")
 
+barplot(t(data.frame(md_rf$importance / sum(md_rf$importance))), las=2, main="Variable RF Importance")
+barplot(t(data.frame(md_rf2$coefficients)), las=2, main="GLM Coefficients")
+barplot(t(data.frame(md_rf3$importance / sum(md_rf3$importance))), las=2, main="GBM Variable Importance")
 
 
 #predict(md_rf, data[dim(data)[1]])
